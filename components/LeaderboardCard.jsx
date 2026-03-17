@@ -2,7 +2,7 @@
 
 import { Box, Typography, Avatar, Chip } from "@mui/material";
 
-const LeaderboardCard = ({ rank, name, xp, avatar, badge, isCurrentUser }) => (
+const LeaderboardCard = ({ rank, name, xp, avatar, badge, isCurrentUser, preLesson }) => (
   <Box
     sx={{
       display: "flex",
@@ -20,18 +20,39 @@ const LeaderboardCard = ({ rank, name, xp, avatar, badge, isCurrentUser }) => (
       },
     }}
   >
-    <Typography
-      sx={{
-        width: 32,
-        fontWeight: 700,
-        color: "#8a9bab",
-        fontSize: "0.9rem",
-        textAlign: "center",
-        flexShrink: 0,
-      }}
-    >
-      {rank}
-    </Typography>
+    {preLesson ? (
+      <Box
+        sx={{
+          width: 32,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexShrink: 0,
+        }}
+      >
+        <Box
+          sx={{
+            width: 8,
+            height: 8,
+            borderRadius: "50%",
+            bgcolor: "#4a5568",
+          }}
+        />
+      </Box>
+    ) : (
+      <Typography
+        sx={{
+          width: 32,
+          fontWeight: 700,
+          color: "#8a9bab",
+          fontSize: "0.9rem",
+          textAlign: "center",
+          flexShrink: 0,
+        }}
+      >
+        {rank}
+      </Typography>
+    )}
 
     <Avatar
       sx={{
@@ -85,7 +106,7 @@ const LeaderboardCard = ({ rank, name, xp, avatar, badge, isCurrentUser }) => (
         ml: 1,
       }}
     >
-      {xp} XP
+      {preLesson ? "EXP" : `${xp} XP`}
     </Typography>
   </Box>
 );

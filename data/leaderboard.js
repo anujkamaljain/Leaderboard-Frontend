@@ -17,7 +17,7 @@ export const users = [
   { rank: 11, name: "Kobanui", xp: 9, avatar: "🦊", badge: "1+ years" },
   { rank: 12, name: "ngaonai", xp: 7, avatar: "🐸", badge: null },
   { rank: 13, name: "MALLARAPU YASWNTH", xp: 6, avatar: "🎃", badge: "1+ year" },
-  { rank: 14, name: "Chirag Maheshwari", xp: 2, avatar: "🧑‍🎓", badge: null, isCurrentUser: true },
+  { rank: 14, name: "Anuj Kamal Jain", xp: 2, avatar: "🧑‍🎓", badge: null, isCurrentUser: true },
 ];
 
 export const currentUser = users.find((u) => u.isCurrentUser);

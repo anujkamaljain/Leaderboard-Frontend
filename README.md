@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Leaderboard UI — Duolingo Inspired
 
-## Getting Started
+A leaderboard screen UI built to replicate the Duolingo-style ranking system. Made with Next.js and Material UI.
 
-First, run the development server:
+## Project Setup
+
+Make sure you have Node.js (v18+) installed.
 
 ```bash
+git clone <repo-url>
+cd leaderboard
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App runs on `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Folder Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+leaderboard/
+├── app/
+│   ├── layout.js           ← root layout with font + theme
+│   ├── page.js             ← main page, state management
+│   ├── ThemeRegistry.js    ← MUI theme provider wrapper
+│   └── globals.css         ← base reset styles
+├── components/
+│   ├── Sidebar.jsx         ← left nav sidebar
+│   ├── LeagueBadges.jsx    ← league shield icons row
+│   ├── LeaderboardHeader.jsx ← league name + subtitle
+│   ├── LeaderboardList.jsx ← renders list of ranked users
+│   ├── LeaderboardCard.jsx ← single user row (rank, avatar, name, xp)
+│   ├── PromotionZone.jsx   ← promotion zone divider
+│   ├── PlaceholderRows.jsx ← skeleton rows for pre-lesson state
+│   ├── NoLessonPrompt.jsx  ← "start a lesson" CTA
+│   └── EmojiStatusPanel.jsx ← emoji status panel with avatar preview
+├── data/
+│   ├── leaderboard.js      ← user data + league config
+│   ├── navigation.js       ← sidebar nav items
+│   └── emojis.js           ← emoji options list
+├── theme.js                ← MUI dark theme config
+└── package.json
+```
 
-## Learn More
+## Component Breakdown
 
-To learn more about Next.js, take a look at the following resources:
+**Sidebar** — Fixed left navigation with icons for each section. Highlights the active page. On mobile, the sidebar is replaced by a hamburger menu button that opens an MUI Drawer overlay with the same nav items and a close button. Uses extracted `NavList` and `Logo` sub-components to avoid duplication between desktop and mobile views.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**LeagueBadges** — Row of shield SVGs representing different leagues (bronze → obsidian). The current league is visually larger and glowing.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**LeaderboardHeader** — Shows the league name at the top. Conditionally renders the subtitle and timer only when a lesson has been completed.
 
-## Deploy on Vercel
+**LeaderboardList** — Maps over the users array and renders a `LeaderboardCard` for each. Drops in a `PromotionZone` divider at the right cutoff point.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**LeaderboardCard** — One row in the leaderboard. Shows rank number, avatar, username, optional streak badge, and XP. The current user's row gets a highlight background and blue bottom border. Has a `preLesson` mode where the rank becomes a dot and XP shows as "EXP" since the user hasn't joined the board yet.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**PromotionZone** — A styled divider that separates promoted users from the rest.
+
+**PlaceholderRows** — Skeleton/ghost rows shown before the user starts a lesson. These fade out gradually to indicate locked content.
+
+**NoLessonPrompt** — Centered text + button telling the user to complete a lesson. Clicking "Start a Lesson" switches to the full leaderboard view.
+
+**EmojiStatusPanel** — Right side panel where users pick a status emoji. Shows the current user's avatar in a large circle with the selected status emoji as a superscript badge on the top-right corner and a green online indicator dot on the bottom-right. Clicking "CLEAR" resets the status. Accepts `userAvatar` prop from the page to display the correct avatar. On mobile, this panel stacks below the leaderboard.
+
+## UI States
+
+1. **Pre-lesson** — User hasn't done a lesson yet. Shows the prompt, placeholder skeleton rows, and the current user at the bottom with a dot instead of a rank and "EXP" instead of XP value.
+
+2. **Active leaderboard** — User clicked "Start a Lesson". Full ranked list appears with XP values, promotion zone, streak badges, and the current user highlighted.
+
+## Responsive Design
+
+- **Desktop (md+)** — Fixed sidebar on the left, leaderboard in the center, status panel on the right side.
+- **Mobile (xs–sm)** — Sidebar hidden, replaced by a hamburger menu with a slide-in drawer. Leaderboard and status panel stack vertically. Top padding added for hamburger button clearance.
+
+## Tech Stack
+
+- Next.js 16
+- React 19
+- Material UI 7
