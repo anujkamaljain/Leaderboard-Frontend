@@ -8,7 +8,6 @@ Make sure you have Node.js (v18+) installed.
 
 ```bash
 git clone <repo-url>
-cd leaderboard
 npm install
 npm run dev
 ```
